@@ -137,11 +137,39 @@ define(function (require, exports, module) {
                 }
             });
         };
+        
+        CodeMirror.commands.foldToLevel = function (cm, start, end) {
+            var rf = CodeMirror.fold.auto, range, level = prefs.getSetting("maxFoldLevel");
+            function foldLevel(n, from, to) {
+                if (n > 0) {
+                    var i, e;
+                    for (i = from; i < to; ) {
+                        range = rf(cm, CodeMirror.Pos(i, 0));
+                        if (range) {
+                            cm.foldCode(CodeMirror.Pos(i, 0), null, "fold");
+                            i = range.to.line + 1;
+                            //call fold level for the range just folded
+                            cm.operation(function () {
+                                foldLevel(n - 1, range.from.line + 1, range.to.line - 1);
+                            });
+                        } else {
+                            i++;
+                        }
+                    }
+                }
+            }
+            cm.operation(function () {
+                start = start === undefined ? cm.firstLine() : start;
+                end = end || cm.lastLine();
+                foldLevel(level, start, end);
+            });
+        };
+        
         CodeMirror.commands.unfoldAll = function (cm) {
             cm.operation(function () {
                 var i, e;
                 for (i = cm.firstLine(), e = cm.lastLine(); i <= e; i++) {
-                    cm.foldCode(CodeMirror.Pos(i, 0), null, "unfold");
+                     if (cm.isFolded(i)) { cm.unfoldCode(i); }
                 }
             });
         };

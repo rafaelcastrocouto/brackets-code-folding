@@ -17,7 +17,11 @@ define(function (require, exports, module) {
 	
 	function setFormValues(prefs) {
 		$("#min-fold-size").val(prefs.minFoldSize || 2);
+<<<<<<< HEAD
 		$("#max-ind").val(prefs.maxIndent || 2);
+=======
+        $("#max-fold-level").val(prefs.maxFoldLevel || 2);
+>>>>>>> 1f037826be78ce19a7f263de9c75b1969d6ac89e
 		$("#save-fold-states").prop("checked", prefs.saveFoldStates);
 		$("#always-use-indent-fold").prop("checked", prefs.alwaysUseIndentFold);
 		$("#enable-region-folding").prop("checked", prefs.enableRegionFolding);
@@ -38,13 +42,21 @@ define(function (require, exports, module) {
 			if (buttonId === "ok") {
 				var $dialog = dialog.getElement();
 				var minFoldSize = $("#min-fold-size", $dialog).val();
+                var maxFoldLevel = $("#max-fold-level", $dialog).val();
 				preferences.setSetting("minFoldSize", isNaN(minFoldSize) || +minFoldSize === 0 ?
 									   +preferences.getSetting("minFoldSize") : +minFoldSize);
+<<<<<<< HEAD
                 var maxind = $("#max-ind", $dialog).val();
 				preferences.setSetting("maxIndent", isNaN(maxind) || +maxind === 0 ?
 									   +preferences.getSetting("maxIndent") : +maxind);
 				preferences.setSetting("saveFoldStates", $("#save-fold-states", $dialog).prop("checked"));
 				preferences.setSetting("alwaysUseIndentFold", $("#always-use-indent-fold", $dialog).prop("checked"));
+=======
+				preferences.setSetting("saveFoldStates", $("#save-fold-states", $dialog).prop("checked"));				                
+				preferences.setSetting("maxFoldLevel", isNaN(maxFoldLevel) || +maxFoldLevel === 0 ?
+									   +preferences.getSetting("maxFoldLevel") : +maxFoldLevel);
+                preferences.setSetting("alwaysUseIndentFold", $("#always-use-indent-fold", $dialog).prop("checked"));
+>>>>>>> 1f037826be78ce19a7f263de9c75b1969d6ac89e
 				preferences.setSetting("enableRegionFolding", $("#enable-region-folding", $dialog).prop("checked"));
 				preferences.setSetting("fadeFoldButtons", $("#fade-fold-buttons", $dialog).prop("checked"));
                 if (cb && typeof cb === "function") {
